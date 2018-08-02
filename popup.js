@@ -1,0 +1,48 @@
+document.getElementById("type").onchange=()=>{
+	if(document.getElementById("type").value==1)
+	{
+		document.getElementById("streamurl").style.display="block"
+		document.getElementById("streamnote").style.display="list-item"
+	}
+	else
+	{
+		document.getElementById("streamurl").style.display="none"
+		document.getElementById("streamnote").style.display="none"
+	}
+	if(document.getElementById("type").value==2)
+	{
+		document.getElementById("state").className=""
+		document.getElementById("party").style.display="none"
+	}
+	else
+	{
+		document.getElementById("state").className="withparty"
+		document.getElementById("party").style.display="inline-block"
+	}
+}
+document.getElementById("updatebtn").onclick=()=>chrome.runtime.sendMessage({
+	type:document.getElementById("type").value,
+	name:document.getElementById("name").value,
+	streamurl:document.getElementById("streamurl").value,
+	details:document.getElementById("details").value,
+	state:document.getElementById("state").value,
+	partycur:document.getElementById("partycur").value,
+	partymax:document.getElementById("partymax").value
+})
+document.getElementById("streamurl").onchange=()=>document.getElementById("streamurl").value=document.getElementById("streamurl").value.replace("www.twitch.tv","twitch.tv")
+chrome.storage.local.get(["type","name","streamurl","details","state","partycur","partymax"],result=>{
+	document.querySelector("#type [value='"+result.type+"']").setAttribute("selected","selected")
+	document.getElementById("type").onchange();
+	if(result.name)
+		document.getElementById("name").value=result.name
+	if(result.streamurl)
+		document.getElementById("streamurl").value=result.streamurl
+	if(result.details)
+		document.getElementById("details").value=result.details
+	if(result.state)
+		document.getElementById("state").value=result.state
+	if(result.partycur)
+		document.getElementById("partycur").value=result.partycur
+	if(result.partymax)
+		document.getElementById("partymax").value=result.partymax
+})
