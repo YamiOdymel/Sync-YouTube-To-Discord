@@ -1,3 +1,14 @@
+chrome.runtime.sendMessage({action:"hasPort"},response=>{
+	if(response.hasPort)
+	{
+		document.getElementById("content-ok").className=""
+	}
+	else
+	{
+		document.getElementById("content-notab").className=""
+	}
+	document.getElementById("content-loading").className="hidden"
+})
 document.getElementById("type").onchange=()=>{
 	if(document.getElementById("type").value==1)
 	{

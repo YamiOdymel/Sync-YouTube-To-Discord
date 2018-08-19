@@ -14,7 +14,14 @@ chrome.runtime.onConnect.addListener(port=>{
 		port.onDisconnect.addListener(()=>discordPort=undefined)
 	}
 })
-chrome.runtime.onMessage.addListener(request=>{
-	chrome.storage.local.set(request)
-	discordPort.postMessage(request)
+chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
+	if(request.action=="hasPort")
+	{
+		sendResponse({hasPort:discordPort!==undefined})
+	}
+	else
+	{
+		chrome.storage.local.set(request)
+		discordPort.postMessage(request)
+	}
 })

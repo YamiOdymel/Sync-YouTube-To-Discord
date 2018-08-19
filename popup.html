@@ -2,31 +2,46 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<style>body{min-width:400px}#type{width:100px}#name{width:292px}#streamurl,#details,#state{width:395px}#state.withparty{width:302px}input[type="number"]{width:32px}</style>
+	<link rel="stylesheet" href="popup.css">
 </head>
 <body>
 	<h1>Set Discord Activity</h1>
-	<select id="type">
-		<option value="0">Playing</option>
-		<option value="1">Streaming</option>
-		<option value="2">Listening to</option>
-	</select>
-	<input type="text" id="name" value="Set Discord Activity">
-	<input type="text" id="details" placeholder="Optional: Details (e.g. 5v5 Deathmatch)">
-	<input type="text" id="state" placeholder="Optional: State (e.g. In Game)">
-	<div id="party">
-		<input type="number" id="partycur" value="1">
-		of
-		<input type="number" id="partymax" value="4">
+	<div id="content-loading">
+		<p>Set Discord Activity is loading...</p>
 	</div>
-	<input type="text" id="streamurl" value="https://twitch.tv/settings" placeholder="Stream URL">
-	<ul>
-		<li id="streamnote">Stream URL only supports twitch.tv links</li>
-		<li>Discord only accepts 5 status updates per minute</li>
-		<li>You won't see your status yourself</li>
-		<li>The discord tab needs to be reloaded after install</li>
-	</ul>
-	<button id="updatebtn">Update Status</button>
+	<div id="content-notab" class="hidden">
+		<p><b>No Discord tab has been detected.</b></p>
+		<p>Troubleshooting:</p>
+		<ul>
+			<li>Make sure a discord tab is open</li>
+			<li>Reload the discord tab</li>
+			<li>Restart your browser</li>
+			<li>If nothing worked, <a href="mailto:tim@timmyrs.de" target="_blank">contact me</a></li>
+		</ul>
+	</div>
+	<div id="content-ok" class="hidden">
+		<select id="type">
+			<option value="0">Playing</option>
+			<option value="1">Streaming</option>
+			<option value="2">Listening to</option>
+		</select>
+		<input type="text" id="name" value="Set Discord Activity">
+		<input type="text" id="details" placeholder="Optional: Details (e.g. 5v5 Deathmatch)">
+		<input type="text" id="state" placeholder="Optional: State (e.g. In Game)">
+		<div id="party">
+			<input type="number" id="partycur">
+			of
+			<input type="number" id="partymax">
+		</div>
+		<input type="text" id="streamurl" value="https://twitch.tv/settings" placeholder="Stream URL">
+		<button id="updatebtn">Update Status</button>
+		<p>Keep in mind:</p>
+		<ul>
+			<li id="streamnote">Stream URL only supports https://twitch.tv/... links</li>
+			<li>Discord only accepts 5 status updates per minute</li>
+			<li>You won't see your status yourself</li>
+		</ul>
+	</div>
 	<p>Copyright (c) 2018, <a href="https://timmyrs.de" target="_blank">Tim "timmyRS" Speckhals</a></p>
 	<script src="popup.js"></script>
 </body>
