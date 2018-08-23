@@ -13,10 +13,9 @@
 		<p><b>No Discord tab has been detected.</b></p>
 		<p>Troubleshooting:</p>
 		<ul>
-			<li>Make sure a Discord tab is open</li>
-			<li>Reload the Discord tab</li>
-			<li>Restart your browser</li>
-			<li>If nothing worked, <a href="mailto:tim@timmyrs.de" target="_blank">contact me</a></li>
+			<li>Reload the Discord tab.</li>
+			<li>If that didn't do it, restart your browser.</li>
+			<li>If nothing helped, <a href="mailto:tim@timmyrs.de" target="_blank">contact me</a>.</li>
 		</ul>
 	</div>
 	<div id="content-ok" class="hidden">
@@ -25,6 +24,7 @@
 			<select id="source">
 				<option value="custom">Custom</option>
 				<option value="youtube">YouTube</option>
+				<option value="soundcloud">SoundCloud</option>
 			</select>
 		</p>
 		<div id="content-source-custom" class="hidden">
@@ -43,8 +43,8 @@
 			</div>
 			<input type="text" id="streamurl" value="https://twitch.tv/settings" placeholder="Stream URL">
 			<ul>
-				<li id="streamnote">Stream URL only supports https://twitch.tv/... links</li>
-				<li>Discord only accepts 5 status updates per minute</li>
+				<li id="streamnote">Stream URL only supports https://twitch.tv/... links.</li>
+				<li>Discord only accepts 5 status updates per minute.</li>
 			</ul>
 		</div>
 		<div id="content-source-youtube" class="hidden">
@@ -52,16 +52,32 @@
 				<p><b>No YouTube tab has been detected.</b></p>
 				<p>Troubleshooting:</p>
 				<ul>
-					<li>Make sure a YouTube tab is open</li>
-					<li>Reload the YouTube tab</li>
-					<li>Restart your browser</li>
-					<li>If nothing worked, <a href="mailto:tim@timmyrs.de" target="_blank">contact me</a></li>
+					<li>Reload the YouTube tab.</li>
+					<li>If that didn't do it, restart your browser.</li>
+					<li>If nothing helped, <a href="mailto:tim@timmyrs.de" target="_blank">contact me</a>.</li>
 				</ul>
 			</div>
 			<div id="content-source-youtube-ok" class="hidden">
 				<p>Your Discord Activity will be the title of video you're watching.</p>
 				<ul>
 					<li>Discord only accepts 5 status updates per minute</li>
+				</ul>
+			</div>
+		</div>
+		<div id="content-source-soundcloud" class="hidden">
+			<div id="content-source-soundcloud-notab" class="hidden">
+				<p><b>No SoundCloud tab has been detected.</b></p>
+				<p>Troubleshooting:</p>
+				<ul>
+					<li>Reload the SoundCloud tab.</li>
+					<li>If that didn't do it, restart your browser.</li>
+					<li>If nothing helped, <a href="mailto:tim@timmyrs.de" target="_blank">contact me</a>.</li>
+				</ul>
+			</div>
+			<div id="content-source-soundcloud-ok" class="hidden">
+				<p>Your Discord Activity will be the title of song you're listening to.</p>
+				<ul>
+					<li>Discord only accepts 5 status updates per minute.</li>
 				</ul>
 			</div>
 		</div>

@@ -1,4 +1,4 @@
-var discordPort,youtubePort,source="custom",
+var discordPort,youtubePort,soundcloudPort,source="custom",
 resetActivity=()=>{
 	if(discordPort!==undefined)
 		discordPort.postMessage({
@@ -30,13 +30,12 @@ chrome.runtime.onConnect.addListener(port=>{
 		})
 		if(source=="custom")
 			chrome.storage.local.get(["type","name","streamurl","details","state","partycur","partymax"],result=>discordPort.postMessage(result))
-		else if(source=="youtube")
-		{
-			if(youtubePort!==undefined)
-				youtubePort.postMessage({listen:true})
-			else
-				resetActivity()
-		}
+		else if(source=="youtube"&&youtubePort!==undefined)
+			youtubePort.postMessage({listen:true})
+		else if(source=="soundcloud"&&soundcloudPort!==undefined)
+			soundcloudPort.postMessage({listen:true})
+		else
+			resetActivity()
 	}
 	else if(port.name=="youtube")
 	{
@@ -56,6 +55,24 @@ chrome.runtime.onConnect.addListener(port=>{
 		if(source=="youtube"&&discordPort!==undefined)
 			youtubePort.postMessage({listen:true})
 	}
+	else if(port.name=="soundcloud")
+	{
+		if(soundcloudPort!==undefined)
+		{
+			soundcloudPort.postMessage({action:"close"})
+			soundcloudPort.disconnect()
+		}
+		soundcloudPort=port
+		console.info("SoundCloud port opened")
+		port.onDisconnect.addListener(()=>{
+			console.info("SoundCloud port closed")
+			soundcloudPort=undefined
+			if(source=="soundcloud")
+				resetActivity()
+		})
+		if(source=="soundcloud"&&discordPort!==undefined)
+			soundcloudPort.postMessage({listen:true})
+	}
 	else
 	{
 		console.warn("Denied connection from port named",port.name)
@@ -69,7 +86,11 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
 		switch(request.action)
 		{
 			case"ports":
-			sendResponse({discord:discordPort!==undefined,youtube:youtubePort!==undefined})
+			sendResponse({
+				discord:discordPort!==undefined,
+				youtube:youtubePort!==undefined,
+				soundcloud:soundcloudPort!==undefined
+			})
 			break
 			case"source":
 			console.assert(request.source!==undefined)
@@ -82,11 +103,17 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
 				else
 					resetActivity()
 			}
-			else
+			else if(youtubePort!==undefined)
+				youtubePort.postMessage({listen:false})
+			if(source=="soundcloud")
 			{
-				if(youtubePort!==undefined)
-					youtubePort.postMessage({listen:false})
+				if(soundcloudPort!==undefined)
+					soundcloudPort.postMessage({listen:true})
+				else
+					resetActivity()
 			}
+			else if(soundcloudPort!==undefined)
+				soundcloudPort.postMessage({listen:false})
 			break
 			case"reset":
 			resetActivity()

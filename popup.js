@@ -7,6 +7,10 @@ chrome.runtime.sendMessage({action:"ports"},response=>{
 		document.getElementById("content-source-youtube-ok").className=""
 	else
 		document.getElementById("content-source-youtube-notab").className=""
+	if(response.soundcloud)
+		document.getElementById("content-source-soundcloud-ok").className=""
+	else
+		document.getElementById("content-source-soundcloud-notab").className=""
 	document.getElementById("content-loading").className="hidden"
 })
 document.getElementById("source").onchange=()=>{
@@ -19,6 +23,10 @@ document.getElementById("source").onchange=()=>{
 		document.getElementById("content-source-youtube").className=""
 	else
 		document.getElementById("content-source-youtube").className="hidden"
+	if(source=="soundcloud")
+		document.getElementById("content-source-soundcloud").className=""
+	else
+		document.getElementById("content-source-soundcloud").className="hidden"
 }
 document.getElementById("type").onchange=()=>{
 	let type=document.getElementById("type").value

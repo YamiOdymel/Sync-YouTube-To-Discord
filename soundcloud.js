@@ -1,24 +1,33 @@
-var port=chrome.runtime.connect({name:"youtube"}),
+var port=chrome.runtime.connect({name:"soundcloud"}),
 closeOK=false,
 listening=false,
-lastTitle="YouTube",
+lastPlaying=false,
+lastSong="",
 data=false
 refreshInfo=()=>{
 	if(listening)
 	{
-		let title=document.querySelector("title").textContent
-		if(title!=lastTitle)
+		let playing=false,song="",songLink=""
+		if(document.querySelector(".playControls__play")!=null)
+			playing=document.querySelector(".playControls__play").classList.contains("playing")
+		if(document.querySelector(".playbackSoundBadge__title > a[href][title]")!=null)
 		{
-			lastTitle=title
-			if(title!="YouTube"&&location.pathname=="/watch")
+			song=document.querySelector(".playbackSoundBadge__title > a[href][title]").getAttribute("title")
+			songLink="soundcloud.com"+document.querySelector(".playbackSoundBadge__title a[href][title]").getAttribute("href").split("?in=")[0]
+		}
+		if(lastPlaying!=playing||lastSong!=song)
+		{
+			lastPlaying=playing
+			lastSong=song
+			if(playing)
 			{
 				data={
 					dontSave:true,
-					type:0,
-					name:"YouTube",
+					type:2,
+					name:"SoundCloud",
 					streamurl:"",
-					details:title.split(" - YouTube").join(""),
-					state:"youtu.be/"+location.search.substr(location.search.indexOf("v=")+2,11),
+					details:song,
+					state:songLink,
 					partycur:"",
 					partymax:""
 				}
