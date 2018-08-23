@@ -1,16 +1,28 @@
-chrome.runtime.sendMessage({action:"hasPort"},response=>{
-	if(response.hasPort)
-	{
+chrome.runtime.sendMessage({action:"ports"},response=>{
+	if(response.discord)
 		document.getElementById("content-ok").className=""
-	}
 	else
-	{
 		document.getElementById("content-notab").className=""
-	}
+	if(response.youtube)
+		document.getElementById("content-source-youtube-ok").className=""
+	else
+		document.getElementById("content-source-youtube-notab").className=""
 	document.getElementById("content-loading").className="hidden"
 })
+document.getElementById("source").onchange=()=>{
+	let source=document.getElementById("source").value
+	if(source=="custom")
+		document.getElementById("content-source-custom").className=""
+	else
+		document.getElementById("content-source-custom").className="hidden"
+	if(source=="youtube")
+		document.getElementById("content-source-youtube").className=""
+	else
+		document.getElementById("content-source-youtube").className="hidden"
+}
 document.getElementById("type").onchange=()=>{
-	if(document.getElementById("type").value==1)
+	let type=document.getElementById("type").value
+	if(type==1)
 	{
 		document.getElementById("streamurl").style.display="block"
 		document.getElementById("streamnote").style.display="list-item"
@@ -20,7 +32,7 @@ document.getElementById("type").onchange=()=>{
 		document.getElementById("streamurl").style.display="none"
 		document.getElementById("streamnote").style.display="none"
 	}
-	if(document.getElementById("type").value==2)
+	if(type==2)
 	{
 		document.getElementById("state").className=""
 		document.getElementById("party").style.display="none"
@@ -31,18 +43,35 @@ document.getElementById("type").onchange=()=>{
 		document.getElementById("party").style.display="inline-block"
 	}
 }
-document.getElementById("updatebtn").onclick=()=>chrome.runtime.sendMessage({
-	type:document.getElementById("type").value,
-	name:document.getElementById("name").value,
-	streamurl:document.getElementById("streamurl").value,
-	details:document.getElementById("details").value,
-	state:document.getElementById("state").value,
-	partycur:document.getElementById("partycur").value,
-	partymax:document.getElementById("partymax").value
-})
+document.getElementById("updatebtn").onclick=()=>
+{
+	document.getElementById("updatebtn").setAttribute("disabled","disabled")
+	let source=document.getElementById("source").value
+	chrome.runtime.sendMessage({
+		action:"source",
+		source:source
+	},()=>{
+		if(source=="custom")
+			chrome.runtime.sendMessage({
+				type:document.getElementById("type").value,
+				name:document.getElementById("name").value,
+				streamurl:document.getElementById("streamurl").value,
+				details:document.getElementById("details").value,
+				state:document.getElementById("state").value,
+				partycur:document.getElementById("partycur").value,
+				partymax:document.getElementById("partymax").value
+			},()=>document.getElementById("updatebtn").removeAttribute("disabled"))
+		else
+			document.getElementById("updatebtn").removeAttribute("disabled")
+	})
+}
 document.getElementById("streamurl").onchange=()=>document.getElementById("streamurl").value=document.getElementById("streamurl").value.replace("www.twitch.tv","twitch.tv")
-chrome.storage.local.get(["type","name","streamurl","details","state","partycur","partymax"],result=>{
-	document.querySelector("#type [value='"+result.type+"']").setAttribute("selected","selected")
+chrome.storage.local.get(["source","type","name","streamurl","details","state","partycur","partymax"],result=>{
+	if(result.source)
+		document.querySelector("#source [value='"+result.source+"']").setAttribute("selected","selected")
+	document.getElementById("source").onchange();
+	if(result.type)
+		document.querySelector("#type [value='"+result.type+"']").setAttribute("selected","selected")
 	document.getElementById("type").onchange();
 	if(result.name)
 		document.getElementById("name").value=result.name

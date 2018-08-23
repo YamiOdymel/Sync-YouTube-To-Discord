@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Set Discord Activity",
 	"description": "Set 'Playing', 'Streaming' or 'Listening to' in Discord to whatever, without the desktop client.",
-	"version": "1.1.2",
+	"version": "2.0",
 	"author": "timmyRS",
 	"minimum_chrome_version": "41",
 	"permissions": [
@@ -17,11 +17,24 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["https://discordapp.com/channels/*"],
+			"matches": [
+				"https://discordapp.com/channels/*",
+				"https://www.discordapp.com/channels/*"
+			],
 			"js": [
-				"content_script.js"
+				"discord.js"
 			],
 			"run_at": "document_start"
+		},
+		{
+			"matches": [
+				"https://youtube.com/*",
+				"https://www.youtube.com/*"
+			],
+			"js": [
+				"youtube.js"
+			],
+			"run_at": "document_idle"
 		}
 	]
 }

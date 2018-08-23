@@ -1,0 +1,7 @@
+body{width:400px}
+#type{width:100px}
+#name{width:292px}
+#streamurl,#details,#state{width:395px}
+#state.withparty{width:302px}
+input[type="number"]{width:32px}
+.hidden{display:none}

@@ -1,27 +1,88 @@
-var discordPort;
+var discordPort,youtubePort,source="custom",
+resetActivity=()=>{
+	if(discordPort!==undefined)
+		chrome.runtime.sendMessage({
+			type:"",
+			name:"",
+			streamurl:"",
+			details:"",
+			state:"",
+			partycur:"",
+			partymax:""
+		})
+}
+chrome.storage.local.get(["source"],result=>source=result.source)
 chrome.runtime.onConnect.addListener(port=>{
-	if(port.name!="discord")
-	{
-		console.warn("Denied connection from non-Discord port")
-		port.disconnect()
-	}
-	else
+	if(port.name=="discord")
 	{
 		if(discordPort!==undefined)
 			discordPort.disconnect()
 		discordPort=port
-		chrome.storage.local.get(["type","name","streamurl","details","state","partycur","partymax"],result=>discordPort.postMessage(result))
-		port.onDisconnect.addListener(()=>discordPort=undefined)
+		port.onDisconnect.addListener(()=>{
+			discordPort=undefined
+			if(source=="youtube"&&youtubePort!==undefined)
+				youtubePort.postMessage({listen:false})
+		})
+		if(source=="custom")
+			chrome.storage.local.get(["type","name","streamurl","details","state","partycur","partymax"],result=>discordPort.postMessage(result))
+		else if(source=="youtube")
+		{
+			if(youtubePort!==undefined)
+				youtubePort.postMessage({listen:true})
+			else
+				resetActivity()
+		}
 	}
-})
-chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
-	if(request.action=="hasPort")
+	else if(port.name=="youtube")
 	{
-		sendResponse({hasPort:discordPort!==undefined})
+		if(youtubePort!==undefined)
+			youtubePort.disconnect()
+		youtubePort=port
+		port.onDisconnect.addListener(()=>youtubePort=undefined)
+		if(source=="youtube"&&discordPort!==undefined)
+			youtubePort.postMessage({listen:true})
 	}
 	else
 	{
-		chrome.storage.local.set(request)
-		discordPort.postMessage(request)
+		console.warn("Denied connection from port named",port.name)
+		port.disconnect()
+	}
+})
+chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
+	console.info(request)
+	if(request.action!==undefined)
+	{
+		switch(request.action)
+		{
+			case"ports":
+			sendResponse({discord:discordPort!==undefined,youtube:youtubePort!==undefined})
+			break
+			case"source":
+			console.assert(request.source!==undefined)
+			source=request.source
+			chrome.storage.local.set({"source":source})
+			if(source=="youtube")
+			{
+				if(youtubePort!==undefined)
+					youtubePort.postMessage({listen:true})
+				else
+					resetActivity()
+			}
+			else if(youtubePort!==undefined)
+				youtubePort.postMessage({listen:false})
+			break
+			case"reset":
+			resetActivity()
+			break
+			default:
+			console.warn("Unknown action",request.action)
+		}
+	}
+	else
+	{
+		if(request.dontSave!==true)
+			chrome.storage.local.set(request)
+		if(discordPort!==undefined)
+			discordPort.postMessage(request)
 	}
 })

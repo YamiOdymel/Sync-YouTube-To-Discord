@@ -1,4 +1,4 @@
-let injectionCode=()=>{
+var injectionCode=()=>{
 	let props=["binaryType","bufferedAmount","extensions","onclose","onmessage","onopen","protocol","readyState","url"],
 	WS=window.WebSocket,status="online",activitySince=1,isAFK=false,timer
 	window.activityChanged=false
@@ -89,7 +89,7 @@ let injectionCode=()=>{
 			}}))
 		}
 	}
-}
+},
 injectScript=text=>{
 	let script=document.createElement("script")
 	script.innerHTML=text
@@ -97,16 +97,17 @@ injectScript=text=>{
 	setTimeout(()=>{
 		document.documentElement.removeChild(script)
 	},10)
-}
+},
 encodeString=str=>{
 	if(str)
 		return str.split("\\").join("\\\\").split("\"").join("\\\"")
 	else
 		return str
-}
+},
+port=chrome.runtime.connect({name:"discord"})
 injectScript("("+injectionCode.toString()+")()")
-var port=chrome.runtime.connect({name:"discord"})
 port.onMessage.addListener(msg=>{
+	console.info(msg)
 	if(msg.type!==undefined&&msg.name!==undefined)
 	{
 		injectScript([

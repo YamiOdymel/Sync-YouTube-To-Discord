@@ -1,0 +1,41 @@
+var port=chrome.runtime.connect({name:"youtube"}),
+listening=false,
+lastTitle="YouTube",
+data=false,
+refreshInfo=()=>{
+	if(listening)
+	{
+		if(location.pathname=="/watch")
+		{
+			let title=document.querySelector("title").textContent
+			if(title!=lastTitle)
+			{
+				lastTitle=title
+				if(title!="YouTube")
+				{
+					data={
+						dontSave:true,
+						type:"2",
+						name:"YouTube: "+title.split(" - YouTube").join(""),
+						streamurl:"",
+						details:"youtu.be/"+location.search.substr(location.search.indexOf("v=")+2,11),
+						state:"",
+						partycur:"",
+						partymax:""
+					}
+					chrome.runtime.sendMessage(data)
+				}
+				else
+					chrome.runtime.sendMessage({action:"reset"})
+			}
+		}
+	}
+}
+setInterval(refreshInfo,1000)
+port.onMessage.addListener(msg=>{
+	console.info(msg)
+	if(!listening&&msg.listen&&data)
+		chrome.runtime.sendMessage(data)
+	listening=msg.listen
+})
+port.onDisconnect.addListener(()=>listening=false)
