@@ -1,32 +1,33 @@
 var port=chrome.runtime.connect({name:"youtube"}),
+closeOK=false,
 listening=false,
 lastTitle="YouTube",
-data=false,
+data=false
 refreshInfo=()=>{
 	if(listening)
 	{
-		if(location.pathname=="/watch")
+		let title=document.querySelector("title").textContent
+		if(title!=lastTitle)
 		{
-			let title=document.querySelector("title").textContent
-			if(title!=lastTitle)
+			lastTitle=title
+			if(title!="YouTube"&&location.pathname=="/watch")
 			{
-				lastTitle=title
-				if(title!="YouTube")
-				{
-					data={
-						dontSave:true,
-						type:"2",
-						name:"YouTube: "+title.split(" - YouTube").join(""),
-						streamurl:"",
-						details:"youtu.be/"+location.search.substr(location.search.indexOf("v=")+2,11),
-						state:"",
-						partycur:"",
-						partymax:""
-					}
-					chrome.runtime.sendMessage(data)
+				data={
+					dontSave:true,
+					type:2,
+					name:"YouTube: "+title.split(" - YouTube").join(""),
+					streamurl:"",
+					details:"youtu.be/"+location.search.substr(location.search.indexOf("v=")+2,11),
+					state:"",
+					partycur:"",
+					partymax:""
 				}
-				else
-					chrome.runtime.sendMessage({action:"reset"})
+				chrome.runtime.sendMessage(data)
+			}
+			else
+			{
+				data=false
+				chrome.runtime.sendMessage({action:"reset"})
 			}
 		}
 	}
@@ -34,8 +35,31 @@ refreshInfo=()=>{
 setInterval(refreshInfo,1000)
 port.onMessage.addListener(msg=>{
 	console.info(msg)
-	if(!listening&&msg.listen&&data)
-		chrome.runtime.sendMessage(data)
-	listening=msg.listen
+	if(msg.action)
+	{
+		switch(msg.action)
+		{
+			case"close":
+			closeOK=true
+			break
+			default:
+			console.warn("Unknown action",msg.action)
+		}
+	}
+	else
+	{
+		listening=msg.listen
+		if(listening&&data)
+			chrome.runtime.sendMessage(data)
+	}
 })
-port.onDisconnect.addListener(()=>listening=false)
+port.onDisconnect.addListener(()=>{
+	console.info("port closed")
+	if(closeOK)
+	{
+		closeOK=false
+		listening=false
+	}
+	else
+		location.reload()
+})

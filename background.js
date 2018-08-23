@@ -1,8 +1,8 @@
 var discordPort,youtubePort,source="custom",
 resetActivity=()=>{
 	if(discordPort!==undefined)
-		chrome.runtime.sendMessage({
-			type:"",
+		discordPort.postMessage({
+			type:0,
 			name:"",
 			streamurl:"",
 			details:"",
@@ -16,9 +16,14 @@ chrome.runtime.onConnect.addListener(port=>{
 	if(port.name=="discord")
 	{
 		if(discordPort!==undefined)
+		{
+			discordPort.postMessage({action:"close"})
 			discordPort.disconnect()
+		}
 		discordPort=port
+		console.info("Discord port opened")
 		port.onDisconnect.addListener(()=>{
+			console.info("Discord port closed")
 			discordPort=undefined
 			if(source=="youtube"&&youtubePort!==undefined)
 				youtubePort.postMessage({listen:false})
@@ -36,9 +41,18 @@ chrome.runtime.onConnect.addListener(port=>{
 	else if(port.name=="youtube")
 	{
 		if(youtubePort!==undefined)
+		{
+			youtubePort.postMessage({action:"close"})
 			youtubePort.disconnect()
+		}
 		youtubePort=port
-		port.onDisconnect.addListener(()=>youtubePort=undefined)
+		console.info("YouTube port opened")
+		port.onDisconnect.addListener(()=>{
+			console.info("YouTube port closed")
+			youtubePort=undefined
+			if(source=="youtube")
+				resetActivity()
+		})
 		if(source=="youtube"&&discordPort!==undefined)
 			youtubePort.postMessage({listen:true})
 	}
@@ -68,8 +82,11 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
 				else
 					resetActivity()
 			}
-			else if(youtubePort!==undefined)
-				youtubePort.postMessage({listen:false})
+			else
+			{
+				if(youtubePort!==undefined)
+					youtubePort.postMessage({listen:false})
+			}
 			break
 			case"reset":
 			resetActivity()

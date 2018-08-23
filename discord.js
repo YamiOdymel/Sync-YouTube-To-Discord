@@ -1,4 +1,4 @@
-var injectionCode=()=>{
+injectionCode=()=>{
 	let props=["binaryType","bufferedAmount","extensions","onclose","onmessage","onopen","protocol","readyState","url"],
 	WS=window.WebSocket,status="online",activitySince=1,isAFK=false,timer
 	window.activityChanged=false
@@ -89,7 +89,7 @@ var injectionCode=()=>{
 			}}))
 		}
 	}
-},
+}
 injectScript=text=>{
 	let script=document.createElement("script")
 	script.innerHTML=text
@@ -97,21 +97,32 @@ injectScript=text=>{
 	setTimeout(()=>{
 		document.documentElement.removeChild(script)
 	},10)
-},
+}
+injectScript("("+injectionCode.toString()+")()")
 encodeString=str=>{
 	if(str)
 		return str.split("\\").join("\\\\").split("\"").join("\\\"")
 	else
 		return str
-},
-port=chrome.runtime.connect({name:"discord"})
-injectScript("("+injectionCode.toString()+")()")
+}
+let port=chrome.runtime.connect({name:"discord"}),closeOK=false
 port.onMessage.addListener(msg=>{
 	console.info(msg)
-	if(msg.type!==undefined&&msg.name!==undefined)
+	if(msg.action)
+	{
+		switch(msg.action)
+		{
+			case"close":
+			closeOK=true
+			break
+			default:
+			console.warn("Unknown action",msg.action)
+		}
+	}
+	else if(msg.type!==undefined&&msg.name!==undefined)
 	{
 		injectScript([
-			"window.activityType="+encodeString(msg.type),
+			"window.activityType="+msg.type,
 			"window.activityName=\""+encodeString(msg.name)+"\"",
 			"window.activityUrl=\""+encodeString(msg.streamurl)+"\"",
 			"window.activityDetails=\""+encodeString(msg.details)+"\"",
@@ -121,4 +132,11 @@ port.onMessage.addListener(msg=>{
 			"window.activityChanged=true"
 			].join(";"))
 	}
+})
+port.onDisconnect.addListener(()=>{
+	console.info("port closed")
+	if(closeOK)
+		closeOK=false
+	else
+		location.reload()
 })

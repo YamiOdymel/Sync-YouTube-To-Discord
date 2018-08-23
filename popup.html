@@ -42,6 +42,10 @@
 				<input type="number" id="partymax">
 			</div>
 			<input type="text" id="streamurl" value="https://twitch.tv/settings" placeholder="Stream URL">
+			<ul>
+				<li id="streamnote">Stream URL only supports https://twitch.tv/... links</li>
+				<li>Discord only accepts 5 status updates per minute</li>
+			</ul>
 		</div>
 		<div id="content-source-youtube" class="hidden">
 			<div id="content-source-youtube-notab" class="hidden">
@@ -56,12 +60,11 @@
 			</div>
 			<div id="content-source-youtube-ok" class="hidden">
 				<p>Your Discord Activity will be the title of video you're watching.</p>
+				<ul>
+					<li>Discord only accepts 5 status updates per minute</li>
+				</ul>
 			</div>
 		</div>
-		<ul>
-			<li id="streamnote">Stream URL only supports https://twitch.tv/... links</li>
-			<li>Discord only accepts 5 status updates per minute</li>
-		</ul>
 		<button id="updatebtn">Set Discord Activity</button>
 	</div>
 	<p>Copyright (c) 2018, <a href="https://timmyrs.de" target="_blank">Tim "timmyRS" Speckhals</a></p>
