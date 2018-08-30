@@ -1,0 +1,71 @@
+{
+	"appName": {
+		"message": "Set Discord Activity — Setze deine Discord Aktivität"
+	},
+	"appDesc": {
+		"message": "Setze \"Spielt\", \"Streamt\" & \"Hört\" in Discord zu was du auch willst oder \"Höre\" YouTube oder SoundCloud!"
+	},
+	"loading": {
+		"message": "Set Discord Activity lädt..."
+	},
+	"trouble": {
+		"message": "Kein Tab wurde erkannt."
+	},
+	"troubleshooting": {
+		"message": "Problembehebung:"
+	},
+	"troubleshootingReload": {
+		"message": "Lade den Tab neu."
+	},
+	"troubleshootingRestart": {
+		"message": "Falls das es nicht tat, starte den Browser neu."
+	},
+	"troubleshootingContact1": {
+		"message": "Falls nichts geholfen hat, "
+	},
+	"troubleshootingContact2": {
+		"message": "kontaktiere mich"
+	},
+	"troubleshootingContact3": {
+		"message": "."
+	},
+	"source": {
+		"message": "Quelle:"
+	},
+	"sourceCustom": {
+		"message": "Ich"
+	},
+	"activityTypePlaying": {
+		"message": "Spielt"
+	},
+	"activityTypeStreaming": {
+		"message": "Streamt"
+	},
+	"activityTypeMusic": {
+		"message": "Hört"
+	},
+	"activityDetails": {
+		"message": "Optional: Details (e.g. 5v5 Deathmatch)"
+	},
+	"activityState": {
+		"message": "Optional: Status (e.g. Ingame)"
+	},
+	"activityStreamURL": {
+		"message": "Stream Link"
+	},
+	"hintTwitchOnly": {
+		"message": "Der Stream Link muss mit https://twitch.tv/ anfangen"
+	},
+	"sourceAutoVideo": {
+		"message": "Deine Discord Aktivität wird der Titel des Videos sein welches du schaust, oder leer sein falls du kein Video schaust."
+	},
+	"sourceAutoMusic": {
+		"message": "Deine Discord Aktivität wird Name + Autor des Songs sein welchen du hörst, oder leer sein falls du kein Song hörst."
+	},
+	"hintRatelimit": {
+		"message": "Discord akzeptiert nur 5 Aktivitätsänderungen pro Minute"
+	},
+	"activityUpdate": {
+		"message": "Setze deine Discord Aktivität"
+	}
+}

@@ -1,8 +1,9 @@
 {
 	"manifest_version": 2,
-	"name": "Set Discord Activity",
-	"description": "Set 'Playing', 'Streaming', and 'Listening to' in Discord without the desktop client. Now with YouTube & SoundCloud support!",
-	"version": "2.1.1",
+	"default_locale": "en",
+	"name": "__MSG_appName__",
+	"description": "__MSG_appDesc__",
+	"version": "2.2",
 	"author": "timmyRS",
 	"minimum_chrome_version": "41",
 	"permissions": [
