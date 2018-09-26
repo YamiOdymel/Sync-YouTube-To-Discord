@@ -107,7 +107,8 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
 			sendResponse({
 				discord:discordPort!==undefined,
 				youtube:youtubePort!==undefined,
-				soundcloud:soundcloudPort!==undefined
+				soundcloud:soundcloudPort!==undefined,
+				plex:plexPort!==undefined
 			})
 			break
 			case"source":
