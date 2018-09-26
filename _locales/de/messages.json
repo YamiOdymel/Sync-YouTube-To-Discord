@@ -3,7 +3,7 @@
 		"message": "Set Discord Activity — Setze deine Discord Aktivität"
 	},
 	"appDesc": {
-		"message": "Setze \"Spielt\", \"Streamt\" & \"Hört\" in Discord zu was du auch willst oder \"Höre\" YouTube oder SoundCloud!"
+		"message": "Setze \"Spielt\", \"Streamt\" & \"Hört\" in Discord zu was du auch willst."
 	},
 	"loading": {
 		"message": "Set Discord Activity lädt..."
@@ -56,11 +56,17 @@
 	"hintTwitchOnly": {
 		"message": "Der Stream Link muss mit https://twitch.tv/ anfangen"
 	},
+	"activitySource": {
+		"message": "auf %"
+	},
 	"sourceAutoVideo": {
 		"message": "Deine Discord Aktivität wird der Titel des Videos sein welches du schaust, oder leer sein falls du kein Video schaust."
 	},
 	"sourceAutoMusic": {
 		"message": "Deine Discord Aktivität wird Name + Autor des Songs sein welchen du hörst, oder leer sein falls du kein Song hörst."
+	},
+	"sourceAutoPlex": {
+		"message": "Deine Discord Aktivität wird der Name der Episode, des Films oder des Songs, den du schaust oder hörst, oder leer sein falls nichts zutrifft."
 	},
 	"hintRatelimit": {
 		"message": "Discord akzeptiert nur 5 Aktivitätsänderungen pro Minute"

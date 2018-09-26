@@ -3,7 +3,7 @@
 	"default_locale": "en",
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
-	"version": "2.2",
+	"version": "2.3",
 	"author": "timmyRS",
 	"minimum_chrome_version": "41",
 	"permissions": [
@@ -19,10 +19,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://discordapp.com/channels/*"],
-			"js": [
-				"discord.js",
-				"content_script.js"
-			],
+			"js": ["discord.js"],
 			"run_at": "document_start"
 		},
 		{
@@ -35,7 +32,18 @@
 		},
 		{
 			"matches": ["https://soundcloud.com/*"],
-			"js": ["soundcloud.js"],
+			"js": [
+				"soundcloud.js",
+				"content_script.js"
+			],
+			"run_at": "document_idle"
+		},
+		{
+			"matches": ["https://app.plex.tv/desktop"],
+			"js": [
+				"plex.js",
+				"content_script.js"
+			],
 			"run_at": "document_idle"
 		}
 	]

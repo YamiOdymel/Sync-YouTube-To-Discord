@@ -21,9 +21,9 @@ refreshInfo=()=>{
 				data={
 					dontSave:true,
 					type:2,
-					name:"SoundCloud",
+					name:song,
 					streamurl:"",
-					details:song,
+					details:chrome.i18n.getMessage("activitySource").replace("%","SoundCloud"),
 					state:songLink,
 					partycur:"",
 					partymax:""

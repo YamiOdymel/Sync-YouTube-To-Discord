@@ -28,6 +28,10 @@ document.getElementById("source").onchange=()=>{
 		document.getElementById("content-source-soundcloud").className=""
 	else
 		document.getElementById("content-source-soundcloud").className="hidden"
+	if(source=="plex")
+		document.getElementById("content-source-plex").className=""
+	else
+		document.getElementById("content-source-plex").className="hidden"
 }
 document.getElementById("type").onchange=()=>{
 	let type=document.getElementById("type").value
@@ -74,7 +78,7 @@ chrome.storage.local.get(["source","type","name","streamurl","details","state","
 	if(result.partymax)
 		document.getElementById("partymax").value=result.partymax
 })
-document.getElementById("streamurl").onchange=()=>{//Fix stream url to avoid confusion
+document.getElementById("streamurl").onchange=()=>{//Fix stream url to fix common mistakes
 	document.getElementById("streamurl").value=document.getElementById("streamurl").value.replace("www.twitch.tv","twitch.tv")
 }
 document.getElementById("updatebtn").onclick=()=>{//Announce update
@@ -112,5 +116,9 @@ chrome.runtime.sendMessage({action:"ports"},response=>{
 		document.getElementById("content-source-soundcloud-ok").className=""
 	else
 		document.getElementById("content-source-soundcloud-notab").className=""
+	if(response.plex)
+		document.getElementById("content-source-plex-ok").className=""
+	else
+		document.getElementById("content-source-plex-notab").className=""
 	document.getElementById("content-loading").className="hidden"
 })

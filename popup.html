@@ -23,6 +23,7 @@
 				<option value="custom" data-message="sourceCustom"></option>
 				<option value="youtube">YouTube</option>
 				<option value="soundcloud">SoundCloud</option>
+				<option value="plex">Plex</option>
 			</select>
 		</p>
 		<div id="content-source-custom" class="hidden">
@@ -72,6 +73,21 @@
 			</div>
 			<div id="content-source-soundcloud-ok" class="hidden">
 				<p data-message="sourceAutoMusic"></p>
+				<ul><li data-message="hintRatelimit"></li></ul>
+			</div>
+		</div>
+		<div id="content-source-plex" class="hidden">
+			<div id="content-source-plex-notab" class="hidden">
+				<p><b data-message="trouble"></b></p>
+				<p data-message="troubleshooting"></p>
+				<ul>
+					<li data-message="troubleshootingReload"></li>
+					<li data-message="troubleshootingRestart"></li>
+					<li><span data-message="troubleshootingContact1"></span><a href="mailto:tim@timmyrs.de" target="_blank" data-message="troubleshootingContact2"></a><span data-message="troubleshootingContact3"></span></li>
+				</ul>
+			</div>
+			<div id="content-source-plex-ok" class="hidden">
+				<p data-message="sourceAutoPlex"></p>
 				<ul><li data-message="hintRatelimit"></li></ul>
 			</div>
 		</div>

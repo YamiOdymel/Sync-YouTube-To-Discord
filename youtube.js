@@ -20,10 +20,10 @@ refreshInfo=()=>{
 			{
 				data={
 					dontSave:true,
-					type:2,
-					name:"YouTube",
+					type:0,
+					name:title,
 					streamurl:"",
-					details:title,
+					details:chrome.i18n.getMessage("activitySource").replace("%","YouTube"),
 					state:"youtu.be/"+location.search.substr(location.search.indexOf("v=")+2,11),
 					partycur:"",
 					partymax:""

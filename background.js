@@ -1,4 +1,4 @@
-var discordPort,youtubePort,soundcloudPort,source="custom",
+var discordPort,youtubePort,soundcloudPort,plexPort,source="custom",
 resetActivity=()=>{
 	if(discordPort!==undefined)
 		discordPort.postMessage({
@@ -73,9 +73,27 @@ chrome.runtime.onConnect.addListener(port=>{
 		if(source=="soundcloud"&&discordPort!==undefined)
 			soundcloudPort.postMessage({listen:true})
 	}
+	else if(port.name=="plex")
+	{
+		if(plexPort!==undefined)
+		{
+			plexPort.postMessage({action:"close"})
+			plexPort.disconnect()
+		}
+		plexPort=port
+		console.info("Plex port opened")
+		port.onDisconnect.addListener(()=>{
+			console.info("Plex port closed")
+			plexPort=undefined
+			if(source=="plex")
+				resetActivity()
+		})
+		if(source=="plex"&&discordPort!==undefined)
+			plexPort.postMessage({listen:true})
+	}
 	else
 	{
-		console.warn("Denied connection from port named",port.name)
+		console.warn("Denied connection with unexpected name:",port.name)
 		port.disconnect()
 	}
 })
@@ -114,6 +132,15 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
 			}
 			else if(soundcloudPort!==undefined)
 				soundcloudPort.postMessage({listen:false})
+			if(source=="plex")
+			{
+				if(plexPort!==undefined)
+					plexPort.postMessage({listen:true})
+				else
+					resetActivity()
+			}
+			else if(plexPort!==undefined)
+				plexPort.postMessage({listen:false})
 			break
 			case"reset":
 			resetActivity()
