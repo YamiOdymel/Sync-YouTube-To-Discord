@@ -41,8 +41,11 @@
 	"activityTypeStreaming": {
 		"message": "Streamt"
 	},
-	"activityTypeMusic": {
-		"message": "Hört"
+	"activityTypeListening": {
+		"message": "Hört auf"
+	},
+	"activityTypeWatching": {
+		"message": "Schaut"
 	},
 	"activityDetails": {
 		"message": "Optional: Details (e.g. 5v5 Deathmatch)"

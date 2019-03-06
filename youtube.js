@@ -20,7 +20,7 @@ refreshInfo=()=>{
 			{
 				data={
 					dontSave:true,
-					type:0,
+					type:3,
 					name:title,
 					streamurl:"",
 					details:chrome.i18n.getMessage("activitySource").replace("%","YouTube"),

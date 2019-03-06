@@ -45,7 +45,7 @@ document.getElementById("type").onchange=()=>{
 		document.getElementById("streamurl").style.display="none"
 		document.getElementById("streamnote").style.display="none"
 	}
-	if(type==2)
+	if(type>1)
 	{
 		document.getElementById("state").className=""
 		document.getElementById("party").style.display="none"
