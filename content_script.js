@@ -11,7 +11,8 @@ port.onMessage.addListener(msg=>{
 		{
 			case"close":
 			closeOK=true
-			break
+			break;
+
 			default:
 			console.warn("Unknown action",msg.action)
 		}
@@ -20,7 +21,9 @@ port.onMessage.addListener(msg=>{
 	{
 		listening=msg.listen
 		if(listening&&data)
+		{
 			chrome.runtime.sendMessage(data)
+		}
 	}
 })
 port.onDisconnect.addListener(()=>{
@@ -31,5 +34,7 @@ port.onDisconnect.addListener(()=>{
 		listening=false
 	}
 	else
+	{
 		location.reload()
+	}
 })

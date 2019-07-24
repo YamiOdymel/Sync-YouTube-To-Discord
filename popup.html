@@ -8,13 +8,8 @@
 	<h1>Set Discord Activity</h1>
 	<div id="content-loading"><p data-message="loading"></p></div>
 	<div id="content-notab" class="hidden">
-		<p><b data-message="trouble"></b></p>
-		<p data-message="troubleshooting"></p>
-		<ul>
-			<li data-message="troubleshootingReload"></li>
-			<li data-message="troubleshootingRestart"></li>
-			<li><span data-message="troubleshootingContact1"></span><a href="mailto:tim@timmyrs.de" target="_blank" data-message="troubleshootingContact2"></a><span data-message="troubleshootingContact3"></span></li>
-		</ul>
+		<p><b><span data-message="noTabPrefix"></span>Discord<span data-message="noTabSuffix"></span></b></p>
+		<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://discordapp.com/channels/@me" target="_blank"></a><span data-message="noTabHelp3"></span></p>
 	</div>
 	<div id="content-ok" class="hidden">
 		<p>
@@ -37,59 +32,39 @@
 			<input type="text" id="details" data-placeholder="activityDetails">
 			<input type="text" id="state" data-placeholder="activityState">
 			<div id="party">
-				<input type="number" id="partycur">
+				<input type="number" id="partycur" placeholder="6">
 				/
-				<input type="number" id="partymax">
+				<input type="number" id="partymax" placeholder="10">
 			</div>
 			<input type="text" id="streamurl" value="https://twitch.tv/settings" data-placeholder="activityStreamURL">
-			<ul>
-				<li id="streamnote" data-message="hintTwitchOnly"></li>
-				<li data-message="hintRatelimit"></li>
-			</ul>
+			<p id="streamnote" data-message="hintTwitchOnly"></p>
 		</div>
 		<div id="content-source-youtube" class="hidden">
 			<div id="content-source-youtube-notab" class="hidden">
-				<p><b data-message="trouble"></b></p>
-				<p data-message="troubleshooting"></p>
-				<ul>
-					<li data-message="troubleshootingReload"></li>
-					<li data-message="troubleshootingRestart"></li>
-					<li><span data-message="troubleshootingContact1"></span><a href="mailto:tim@timmyrs.de" target="_blank" data-message="troubleshootingContact2"></a><span data-message="troubleshootingContact3"></span></li>
-				</ul>
+				<p><b><span data-message="noTabPrefix"></span>YouTube<span data-message="noTabSuffix"></span></b></p>
+				<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://youtube.com/" target="_blank"></a><span data-message="noTabHelp3"></span></p>
 			</div>
 			<div id="content-source-youtube-ok" class="hidden">
 				<p data-message="sourceAutoVideo"></p>
-				<ul><li data-message="hintRatelimit"></li></ul>
 			</div>
 		</div>
 		<div id="content-source-soundcloud" class="hidden">
 			<div id="content-source-soundcloud-notab" class="hidden">
 				<p><b data-message="trouble"></b></p>
-				<p data-message="troubleshooting"></p>
-				<ul>
-					<li data-message="troubleshootingReload"></li>
-					<li data-message="troubleshootingRestart"></li>
-					<li><span data-message="troubleshootingContact1"></span><a href="mailto:tim@timmyrs.de" target="_blank" data-message="troubleshootingContact2"></a><span data-message="troubleshootingContact3"></span></li>
-				</ul>
+				<p><b><span data-message="noTabPrefix"></span>SoundCloud<span data-message="noTabSuffix"></span></b></p>
+				<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://soundcloud.com/" target="_blank"></a><span data-message="noTabHelp3"></span></p>
 			</div>
 			<div id="content-source-soundcloud-ok" class="hidden">
 				<p data-message="sourceAutoMusic"></p>
-				<ul><li data-message="hintRatelimit"></li></ul>
 			</div>
 		</div>
 		<div id="content-source-plex" class="hidden">
 			<div id="content-source-plex-notab" class="hidden">
-				<p><b data-message="trouble"></b></p>
-				<p data-message="troubleshooting"></p>
-				<ul>
-					<li data-message="troubleshootingReload"></li>
-					<li data-message="troubleshootingRestart"></li>
-					<li><span data-message="troubleshootingContact1"></span><a href="mailto:tim@timmyrs.de" target="_blank" data-message="troubleshootingContact2"></a><span data-message="troubleshootingContact3"></span></li>
-				</ul>
+				<p><b><span data-message="noTabPrefix"></span>Plex<span data-message="noTabSuffix"></span></b></p>
+				<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://app.plex.tv/" target="_blank"></a><span data-message="noTabHelp3"></span></p>
 			</div>
 			<div id="content-source-plex-ok" class="hidden">
 				<p data-message="sourceAutoPlex"></p>
-				<ul><li data-message="hintRatelimit"></li></ul>
 			</div>
 		</div>
 		<button id="updatebtn" data-message="activityUpdate"></button>

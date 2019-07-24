@@ -6,7 +6,9 @@ refreshInfo=()=>{
 	{
 		let playing=false,song="",songLink=""
 		if(document.querySelector(".playControls__play")!=null)
+		{
 			playing=document.querySelector(".playControls__play").classList.contains("playing")
+		}
 		if(document.querySelector(".playbackSoundBadge__title > a[href][title]")!=null)
 		{
 			song=document.querySelector(".playbackSoundBadge__title > a[href][title]").getAttribute("title")

@@ -13,7 +13,9 @@ injectionCode=()=>{
 	{
 		this.sock=new WS(u,p)
 		if(u.indexOf("gateway.discord.gg")>-1)
+		{
 			window.activeSock=this.sock
+		}
 		for(let i in props)
 		{
 			Object.defineProperty(this,props[i],{
@@ -74,13 +76,21 @@ injectionCode=()=>{
 		{
 			let game={type:window.activityType,name:window.activityName}
 			if(window.activityType==1)
+			{
 				game.url=window.activityUrl
+			}
 			if(window.activityPartyMax)
+			{
 				game.party={size:[window.activityPartyCur,window.activityPartyMax]}
+			}
 			if(window.activityDetails)
+			{
 				game.details=window.activityDetails
+			}
 			if(window.activityState)
+			{
 				game.state=window.activityState
+			}
 			window.activeSock.send(JSON.stringify({op:3,d:{
 				status:status,
 				game:game,
@@ -101,9 +111,13 @@ injectScript=text=>{
 injectScript("("+injectionCode.toString()+")()")
 encodeString=str=>{
 	if(str)
+	{
 		return str.split("\\").join("\\\\").split("\"").join("\\\"")
+	}
 	else
+	{
 		return str
+	}
 }
 let port=chrome.runtime.connect({name:"discord"}),closeOK=false
 port.onMessage.addListener(msg=>{
@@ -114,7 +128,8 @@ port.onMessage.addListener(msg=>{
 		{
 			case"close":
 			closeOK=true
-			break
+			break;
+
 			default:
 			console.warn("Unknown action",msg.action)
 		}
@@ -136,7 +151,11 @@ port.onMessage.addListener(msg=>{
 port.onDisconnect.addListener(()=>{
 	console.info("port closed")
 	if(closeOK)
+	{
 		closeOK=false
+	}
 	else
+	{
 		location.reload()
+	}
 })

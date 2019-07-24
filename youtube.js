@@ -8,9 +8,13 @@ refreshInfo=()=>{
 		if(location.pathname=="/watch")
 		{
 			if(document.querySelector(".html5-video-player")!=null)
+			{
 				playing=document.querySelector(".html5-video-player").classList.contains("playing-mode")
+			}
 			if(document.querySelector("#info .title")!=null)
+			{
 				title=document.querySelector("#info .title").textContent
+			}
 		}
 		if(lastPlaying!=playing||lastTitle!=title)
 		{
