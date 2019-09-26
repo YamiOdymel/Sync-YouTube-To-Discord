@@ -3,7 +3,10 @@
 	"default_locale": "en",
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
-	"version": "2.4.3",
+	"icons": {
+		"128": "icon.png"
+	},
+	"version": "2.5.0",
 	"author": "timmyRS",
 	"minimum_chrome_version": "41",
 	"permissions": [
