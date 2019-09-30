@@ -15,12 +15,14 @@
 		<p>
 			<span data-message="source"></span>
 			<select id="source">
+				<option value="off" data-message="sourceOff"></option>
 				<option value="custom" data-message="sourceCustom"></option>
 				<option value="youtube">YouTube</option>
 				<option value="soundcloud">SoundCloud</option>
 				<option value="plex">Plex</option>
 			</select>
 		</p>
+		<div id="content-source-off" class="hidden"></div>
 		<div id="content-source-custom" class="hidden">
 			<select id="type">
 				<option value="0" data-message="activityTypePlaying"></option>

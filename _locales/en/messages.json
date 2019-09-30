@@ -1,71 +1,74 @@
 {
-   "activityDetails": {
-      "message": "Optional: Details (e.g. 5v5 Deathmatch)"
-   },
-   "activitySource": {
-      "message": "on %"
-   },
-   "activityState": {
-      "message": "Optional: State (e.g. In Game)"
-   },
-   "activityStreamURL": {
-      "message": "Stream Link"
-   },
-   "activityTypeListening": {
-      "message": "Listening to"
-   },
-   "activityTypePlaying": {
-      "message": "Playing"
-   },
-   "activityTypeStreaming": {
-      "message": "Streaming"
-   },
-   "activityTypeWatching": {
-      "message": "Watching"
-   },
-   "activityUpdate": {
-      "message": "Set Discord Activity"
-   },
-   "appDesc": {
-      "message": "Set \"Playing\", \"Streaming\", \"Listening to\" & \"Watching\" in Discord to whatever you want."
-   },
-   "appName": {
-      "message": "Set Discord Activity"
-   },
-   "hintTwitchOnly": {
-      "message": "The stream link must start with https://twitch.tv/"
-   },
-   "loading": {
-      "message": "Set Discord Activity is loading..."
-   },
-   "noTabHelp1": {
-      "message": "If a tab is already open, reload it. If not, simply "
-   },
-   "noTabHelp2": {
-      "message": "open one"
-   },
-   "noTabHelp3": {
-      "message": "."
-   },
-   "noTabPrefix": {
-      "message": "I didn't detect a "
-   },
-   "noTabSuffix": {
-      "message": " tab."
-   },
-   "source": {
-      "message": "Source:"
-   },
-   "sourceAutoMusic": {
-      "message": "Your Discord Activity will be the name + author of the song you're listening to or empty if you're not listening to a song."
-   },
-   "sourceAutoPlex": {
-      "message": "Your Discord Activity will be the name of the episode, movie, or song you're watching or listening to or empty if not applicable."
-   },
-   "sourceAutoVideo": {
-      "message": "Your Discord Activity will be the title of the video you're watching or empty if you're not watching a video."
-   },
-   "sourceCustom": {
-      "message": "Custom"
-   }
+	"activityDetails": {
+		"message": "Optional: Details (e.g. 5v5 Deathmatch)"
+	},
+	"activitySource": {
+		"message": "on %"
+	},
+	"activityState": {
+		"message": "Optional: State (e.g. In Game)"
+	},
+	"activityStreamURL": {
+		"message": "Stream Link"
+	},
+	"activityTypeListening": {
+		"message": "Listening to"
+	},
+	"activityTypePlaying": {
+		"message": "Playing"
+	},
+	"activityTypeStreaming": {
+		"message": "Streaming"
+	},
+	"activityTypeWatching": {
+		"message": "Watching"
+	},
+	"activityUpdate": {
+		"message": "Set Discord Activity"
+	},
+	"appDesc": {
+		"message": "Set \"Playing\", \"Streaming\", \"Listening to\" & \"Watching\" in Discord to whatever you want."
+	},
+	"appName": {
+		"message": "Set Discord Activity"
+	},
+	"hintTwitchOnly": {
+		"message": "The stream link must start with https://twitch.tv/"
+	},
+	"loading": {
+		"message": "Set Discord Activity is loading..."
+	},
+	"noTabHelp1": {
+		"message": "If a tab is already open, reload it. If not, simply "
+	},
+	"noTabHelp2": {
+		"message": "open one"
+	},
+	"noTabHelp3": {
+		"message": "."
+	},
+	"noTabPrefix": {
+		"message": "I didn't detect a "
+	},
+	"noTabSuffix": {
+		"message": " tab."
+	},
+	"source": {
+		"message": "Source:"
+	},
+	"sourceAutoMusic": {
+		"message": "Your Discord Activity will be the name + author of the song you're listening to or empty if you're not listening to a song."
+	},
+	"sourceAutoPlex": {
+		"message": "Your Discord Activity will be the name of the episode, movie, or song you're watching or listening to or empty if not applicable."
+	},
+	"sourceAutoVideo": {
+		"message": "Your Discord Activity will be the title of the video you're watching or empty if you're not watching a video."
+	},
+	"sourceOff": {
+		"message": "Off"
+	},
+	"sourceCustom": {
+		"message": "Custom"
+	}
 }

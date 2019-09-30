@@ -32,7 +32,11 @@ chrome.runtime.onConnect.addListener(port=>{
 				youtubePort.postMessage({listen:false})
 			}
 		})
-		if(source=="custom")
+		if(source=="off")
+		{
+			resetActivity()
+		}
+		else if(source=="custom")
 		{
 			chrome.storage.local.get(["type","name","streamurl","details","state","partycur","partymax"],result=>discordPort.postMessage(result))
 		}
@@ -140,6 +144,10 @@ chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
 			console.assert(request.source!==undefined)
 			source=request.source
 			chrome.storage.local.set({"source":source})
+			if(source=="off")
+			{
+				resetActivity()
+			}
 			if(source=="youtube")
 			{
 				if(youtubePort!==undefined)

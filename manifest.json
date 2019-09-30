@@ -6,7 +6,7 @@
 	"icons": {
 		"128": "icon.png"
 	},
-	"version": "2.5.0",
+	"version": "2.5.1",
 	"author": "timmyRS",
 	"minimum_chrome_version": "41",
 	"permissions": [
