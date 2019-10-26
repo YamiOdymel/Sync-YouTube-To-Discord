@@ -1,105 +1,106 @@
-injectionCode=()=>{
-	let props=["binaryType","bufferedAmount","extensions","onclose","onmessage","onopen","protocol","readyState","url"],
-	WS=window.WebSocket,status="online",activitySince=1,isAFK=false,timer
-	window.activityChanged=false
-	window.activityType=0
-	window.activityName="Set Discord Activity"
-	window.activityUrl="https://twitch.tv/settings"
-	window.activityDetails=undefined;
-	window.activityState=undefined;
-	window.activityPartyCur=undefined;
-	window.activityPartyMax=undefined;
+const injectionCode=()=>{
+	const originalWebSocket=window.WebSocket,originalWebSocketProperties=["binaryType","bufferedAmount","extensions","onclose","onmessage","onopen","protocol","readyState","url"]
+	let status="online",since=0,afk=false,timer
+	window.SetDiscordActivityData={
+		sendUpdate:false,
+		activityType:0,
+		activityName:"Set Discord Activity",
+		activityUrl:"https://twitch.tv/settings",
+		activityDetails:"",
+		activityState:"",
+		activityPartyCur:"",
+		activityPartyMax:""
+	}
 	window.WebSocket=function(u,p)
 	{
-		this.sock=new WS(u,p)
+		this.downstreamSocket=new originalWebSocket(u,p)
 		if(u.indexOf("gateway.discord.gg")>-1)
 		{
-			window.activeSock=this.sock
+			window.SetDiscordActivityActiveSocket=this.downstreamSocket
 		}
-		for(let i in props)
+		for(let i in originalWebSocketProperties)
 		{
-			Object.defineProperty(this,props[i],{
-				get:function()
-				{
-					return this.sock[props[i]]
-				},
-				set:function(v)
-				{
-					this.sock[props[i]]=v
-				}
+			Object.defineProperty(this,originalWebSocketProperties[i],{
+				get:()=>this.downstreamSocket[originalWebSocketProperties[i]],
+				set:v=>this.downstreamSocket[originalWebSocketProperties[i]]=v
 			})
 		}
 	}
 	window.WebSocket.prototype.send=function(d)
 	{
-		if(this.sock==activeSock)
+		if(this.downstreamSocket==window.SetDiscordActivityActiveSocket)
 		{
-			if(d.substr(0,8)=='{"op":3,')
+			console.log(d)
+			const start=d.substr(0,8)
+			if(start=='{"op":3,')
 			{
-				let j=JSON.parse(d)
+				const j=JSON.parse(d)
 				status=j.d.status
-				activitySince=j.d.since
-				isAFK=j.d.afk
-				window.sendStatus()
+				since=j.d.since
+				afk=j.d.afk
+				window.SetDiscordActivitySendStatus()
 			}
 			else
 			{
-				if(d.substr(0,8)=='{"op":2,')
+				if(start=='{"op":2,')
 				{
 					clearInterval(timer)
 					timer=setInterval(()=>{
-						if(activityChanged)
+						if(window.SetDiscordActivityData.sendUpdate)
 						{
-							activityChanged=false
-							window.sendStatus()
+							window.SetDiscordActivityData.sendUpdate=false
+							window.SetDiscordActivitySendStatus()
 						}
 					},500)
 				}
-				this.sock.send(d)
+				this.downstreamSocket.send(d)
 			}
 		}
 		else
 		{
-			this.sock.send(d)
+			this.downstreamSocket.send(d)
 		}
 	}
 	window.WebSocket.prototype.close=function(c,r)
 	{
-		this.sock.close(c,r)
+		this.downstreamSocket.close(c,r)
 	}
-	window.WebSocket.CONNECTING=WS.CONNECTING
-	window.WebSocket.OPEN=WS.OPEN
-	window.WebSocket.CLOSING=WS.CLOSING
-	window.WebSocket.CLOSED=WS.CLOSED
-	window.sendStatus=()=>{
-		if(window.activeSock&&window.activeSock.readyState==WS.OPEN)
+	window.WebSocket.CONNECTING=originalWebSocket.CONNECTING
+	window.WebSocket.OPEN=originalWebSocket.OPEN
+	window.WebSocket.CLOSING=originalWebSocket.CLOSING
+	window.WebSocket.CLOSED=originalWebSocket.CLOSED
+	window.SetDiscordActivitySendStatus=()=>{
+		if(window.SetDiscordActivityActiveSocket&&window.SetDiscordActivityActiveSocket.readyState==originalWebSocket.OPEN)
 		{
-			let game={type:window.activityType,name:window.activityName}
-			if(window.activityType==1)
-			{
-				game.url=window.activityUrl
+			let activity={
+				type:window.SetDiscordActivityData.activityType,
+				name:window.SetDiscordActivityData.activityName
 			}
-			if(window.activityPartyMax)
+			if(window.SetDiscordActivityData.activityType==1)
 			{
-				game.party={size:[window.activityPartyCur,window.activityPartyMax]}
+				activity.url=window.activityUrl
 			}
-			if(window.activityDetails)
+			if(window.SetDiscordActivityData.activityPartyCur!=""&&window.SetDiscordActivityData.activityPartyMax!="")
 			{
-				game.details=window.activityDetails
+				activity.party={size:[window.SetDiscordActivityData.activityPartyCur,window.SetDiscordActivityData.activityPartyMax]}
 			}
-			if(window.activityState)
+			if(window.SetDiscordActivityData.activityDetails)
 			{
-				game.state=window.activityState
+				activity.details=window.SetDiscordActivityData.activityDetails
 			}
-			window.activeSock.send(JSON.stringify({op:3,d:{
-				status:status,
-				game:game,
-				since:activitySince,
-				afk:isAFK
+			if(window.SetDiscordActivityData.activityState)
+			{
+				activity.state=window.SetDiscordActivityData.activityState
+			}
+			window.SetDiscordActivityActiveSocket.send(JSON.stringify({op:3,d:{
+				status,
+				activities:[activity],
+				since,
+				afk
 			}}))
 		}
 	}
-}
+},
 injectScript=text=>{
 	let script=document.createElement("script")
 	script.innerHTML=text
@@ -107,18 +108,9 @@ injectScript=text=>{
 	setTimeout(()=>{
 		document.documentElement.removeChild(script)
 	},10)
-}
+},
+encodeString=str=>str?str.split("\\").join("\\\\").split("\"").join("\\\""):str
 injectScript("("+injectionCode.toString()+")()")
-encodeString=str=>{
-	if(str)
-	{
-		return str.split("\\").join("\\\\").split("\"").join("\\\"")
-	}
-	else
-	{
-		return str
-	}
-}
 let port=chrome.runtime.connect({name:"discord"}),closeOK=false
 port.onMessage.addListener(msg=>{
 	console.info(msg)
@@ -136,16 +128,16 @@ port.onMessage.addListener(msg=>{
 	}
 	else if(msg.type!==undefined&&msg.name!==undefined)
 	{
-		injectScript([
-			"window.activityType="+msg.type,
-			"window.activityName=\""+encodeString(msg.name)+"\"",
-			"window.activityUrl=\""+encodeString(msg.streamurl)+"\"",
-			"window.activityDetails=\""+encodeString(msg.details)+"\"",
-			"window.activityState=\""+encodeString(msg.state)+"\"",
-			"window.activityPartyCur=\""+encodeString(msg.partycur)+"\"",
-			"window.activityPartyMax=\""+encodeString(msg.partymax)+"\"",
-			"window.activityChanged=true"
-			].join(";"))
+		injectScript(`window.SetDiscordActivityData={
+			sendUpdate:true,
+			activityType:`+msg.type+`,
+			activityName:\"`+encodeString(msg.name)+`\",
+			activityUrl:\"`+encodeString(msg.streamurl)+`\",
+			activityDetails:\"`+encodeString(msg.details)+`\",
+			activityState:\"`+encodeString(msg.state)+`\",
+			activityPartyCur:\"`+encodeString(msg.partycur)+`\",
+			activityPartyMax:\"`+encodeString(msg.partymax)+`\"
+		}`)
 	}
 })
 port.onDisconnect.addListener(()=>{

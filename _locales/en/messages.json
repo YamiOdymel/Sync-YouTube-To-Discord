@@ -23,6 +23,9 @@
 	"activityTypeWatching": {
 		"message": "Watching"
 	},
+	"activityTypeCustomStatus": {
+		"message": "Custom Status"
+	},
 	"activityUpdate": {
 		"message": "Set Discord Activity"
 	},

@@ -1,5 +1,5 @@
-var discordPort,youtubePort,soundcloudPort,plexPort,source="custom",
-resetActivity=()=>{
+let discordPort,youtubePort,soundcloudPort,plexPort,source="custom"
+const resetActivity=()=>{
 	if(discordPort!==undefined)
 	{
 		discordPort.postMessage({

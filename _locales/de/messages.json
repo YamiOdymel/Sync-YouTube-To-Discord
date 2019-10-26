@@ -23,6 +23,9 @@
 	"activityTypeWatching": {
 		"message": "Schaut"
 	},
+	"activityTypeCustomStatus": {
+		"message": "Personalisierter Status"
+	},
 	"activityUpdate": {
 		"message": "Setze deine Discord Aktivität"
 	},
