@@ -1,219 +1,119 @@
-let discordPort,youtubePort,soundcloudPort,plexPort,source="custom"
-const resetActivity=()=>{
-	if(discordPort!==undefined)
-	{
-		discordPort.postMessage({
-			type:0,
-			name:"",
-			streamurl:"",
-			details:"",
-			state:"",
-			partycur:"",
-			partymax:""
-		})
+let discordPort, youtubePort
+
+// resetActivity 會重設 Discord 的狀態。
+const resetActivity = () => {
+	if (discordPort === undefined) {
+		return
 	}
+	discordPort.postMessage({
+		type: 0,
+		name: "",
+		streamurl: "",
+		details: "",
+		state: "",
+		partycur: "",
+		partymax: ""
+	})
 }
-chrome.storage.local.get(["source"],result=>source=result.source)
-chrome.runtime.onConnect.addListener(port=>{
-	if(port.name=="discord")
-	{
-		if(discordPort!==undefined)
-		{
-			discordPort.postMessage({action:"close"})
-			discordPort.disconnect()
+
+//
+chrome.runtime.onInstalled.addListener((details) => {
+	chrome.storage.sync.get(['emptyWhenPause', 'detailType', 'filterType', 'filterList'], function (result) {
+		//
+		if (result.emptyWhenPause === undefined) {
+			chrome.storage.sync.set({ emptyWhenPause: true });
 		}
-		discordPort=port
-		console.info("Discord port opened")
-		port.onDisconnect.addListener(()=>{
-			console.info("Discord port closed")
-			discordPort=undefined
-			if(source=="youtube"&&youtubePort!==undefined)
-			{
-				youtubePort.postMessage({listen:false})
-			}
-		})
-		if(source=="off")
-		{
-			resetActivity()
+		if (result.detailType === undefined) {
+			chrome.storage.sync.set({ detailType: "view" });
 		}
-		else if(source=="custom")
-		{
-			chrome.storage.local.get(["type","name","streamurl","details","state","partycur","partymax"],result=>discordPort.postMessage(result))
+		if (result.filterType === undefined) {
+			chrome.storage.sync.set({ filterType: "not" });
 		}
-		else if(source=="youtube"&&youtubePort!==undefined)
-		{
-			youtubePort.postMessage({listen:true})
+		if (result.filterList === undefined) {
+			chrome.storage.sync.set({ filterList: "# 你可以插入註釋（格式為每個網址一行）\nhttps://www.youtube.com/channel/UC0aDOH-qC-l-_evnNlqWtPA" });
 		}
-		else if(source=="soundcloud"&&soundcloudPort!==undefined)
-		{
-			soundcloudPort.postMessage({listen:true})
-		}
-		else
-		{
-			resetActivity()
-		}
-	}
-	else if(port.name=="youtube")
-	{
-		if(youtubePort!==undefined)
-		{
-			youtubePort.postMessage({action:"close"})
-			youtubePort.disconnect()
-		}
-		youtubePort=port
-		console.info("YouTube port opened")
-		port.onDisconnect.addListener(()=>{
-			console.info("YouTube port closed")
-			youtubePort=undefined
-			if(source=="youtube")
-			{
-				resetActivity()
-			}
-		})
-		if(source=="youtube"&&discordPort!==undefined)
-		{
-			youtubePort.postMessage({listen:true})
-		}
-	}
-	else if(port.name=="soundcloud")
-	{
-		if(soundcloudPort!==undefined)
-		{
-			soundcloudPort.postMessage({action:"close"})
-			soundcloudPort.disconnect()
-		}
-		soundcloudPort=port
-		console.info("SoundCloud port opened")
-		port.onDisconnect.addListener(()=>{
-			console.info("SoundCloud port closed")
-			soundcloudPort=undefined
-			if(source=="soundcloud")
-			{
-				resetActivity()
-			}
-		})
-		if(source=="soundcloud"&&discordPort!==undefined)
-		{
-			soundcloudPort.postMessage({listen:true})
-		}
-	}
-	else if(port.name=="plex")
-	{
-		if(plexPort!==undefined)
-		{
-			plexPort.postMessage({action:"close"})
-			plexPort.disconnect()
-		}
-		plexPort=port
-		console.info("Plex port opened")
-		port.onDisconnect.addListener(()=>{
-			console.info("Plex port closed")
-			plexPort=undefined
-			if(source=="plex")
-			{
-				resetActivity()
-			}
-		})
-		if(source=="plex"&&discordPort!==undefined)
-		{
-			plexPort.postMessage({listen:true})
-		}
-	}
-	else
-	{
-		console.error("Denied connection with unexpected name:",port.name)
-		port.disconnect()
-	}
+	})
 })
-chrome.runtime.onMessage.addListener((request,sender,sendResponse)=>{
-	console.info(request)
-	if(request.action!==undefined)
-	{
-		switch(request.action)
-		{
-			case"ports":
-			sendResponse({
-				discord:discordPort!==undefined,
-				youtube:youtubePort!==undefined,
-				soundcloud:soundcloudPort!==undefined,
-				plex:plexPort!==undefined
+
+//
+chrome.runtime.onConnect.addListener(port => {
+	switch (port.name) {
+		// Discord
+		case "discord":
+			// 如果有先前的 Discord 埠口則先關閉。
+			if (discordPort !== undefined) {
+				discordPort.postMessage({ enabled: false })
+				discordPort.disconnect()
+			}
+			// 保存新的 Discord 埠口。
+			discordPort = port
+			// 當 Discord 埠口被關閉時，就先不要監聽 YouTube 埠口。
+			port.onDisconnect.addListener(() => {
+				discordPort = undefined
+				if (youtubePort !== undefined) {
+					youtubePort.postMessage({ enabled: false })
+				}
 			})
-			break;
+			// 如果 YouTube 埠口同時也準備好了，那麼就開始監聽。
+			if (youtubePort !== undefined) {
+				youtubePort.postMessage({ enabled: true })
 
-			case"source":
-			console.assert(request.source!==undefined)
-			source=request.source
-			chrome.storage.local.set({"source":source})
-			if(source=="off")
-			{
-				resetActivity()
 			}
-			if(source=="youtube")
-			{
-				if(youtubePort!==undefined)
-				{
-					youtubePort.postMessage({listen:true})
-				}
-				else
-				{
-					resetActivity()
-				}
-			}
-			else if(youtubePort!==undefined)
-			{
-				youtubePort.postMessage({listen:false})
-			}
-			if(source=="soundcloud")
-			{
-				if(soundcloudPort!==undefined)
-				{
-					soundcloudPort.postMessage({listen:true})
-				}
-				else
-				{
-					resetActivity()
-				}
-			}
-			else if(soundcloudPort!==undefined)
-			{
-				soundcloudPort.postMessage({listen:false})
-			}
-			if(source=="plex")
-			{
-				if(plexPort!==undefined)
-				{
-					plexPort.postMessage({listen:true})
-				}
-				else
-				{
-					resetActivity()
-				}
-			}
-			else if(plexPort!==undefined)
-			{
-				plexPort.postMessage({listen:false})
-			}
-			sendResponse()
-			break;
-
-			case"reset":
+			// 否則就先清空 Discord 狀態。
 			resetActivity()
-			sendResponse()
-			break;
+			break
 
-			default:
-			console.error("Unknown action",request.action)
-		}
+		// YouTube
+		case "youtube":
+			// 如果有先前的 YouTube 埠口則先關閉。
+			if (youtubePort !== undefined) {
+				youtubePort.postMessage({ enabled: false })
+				youtubePort.disconnect()
+			}
+			// 保存新的 YouTube 埠口。
+			youtubePort = port
+			// 如果 YouTube 埠口被關閉的話則清空 Discord 狀態。
+			port.onDisconnect.addListener(() => {
+				youtubePort = undefined
+				resetActivity()
+			})
+			// 如果 Discord 埠口已經準備好的話就監聽 YouTube 埠口狀態。
+			if (discordPort !== undefined) {
+				youtubePort.postMessage({ enabled: true })
+			}
+			break
+
+		//
+		default:
+			port.disconnect()
+			break
 	}
-	else
-	{
-		if(request.dontSave!==true)
-		{
-			chrome.storage.local.set(request)
-		}
-		if(discordPort!==undefined)
-		{
+
+})
+
+//
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+	if (request.action === undefined) {
+		if (discordPort !== undefined) {
 			discordPort.postMessage(request)
 		}
+		return
+	}
+
+	switch (request.action) {
+		case "ports":
+			sendResponse({
+				discord: discordPort !== undefined,
+				youtube: youtubePort !== undefined
+			})
+			break
+
+		case "reset":
+			resetActivity()
+			sendResponse()
+			break
+
+		default:
+			console.error("Unknown action", request.action)
 	}
 })

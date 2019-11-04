@@ -5,74 +5,80 @@
 	<link rel="stylesheet" href="popup.css">
 </head>
 <body>
-	<h1>Set Discord Activity</h1>
-	<div id="content-loading"><p data-message="loading"></p></div>
-	<div id="content-notab" class="hidden">
-		<p><b><span data-message="noTabPrefix"></span>Discord<span data-message="noTabSuffix"></span></b></p>
-		<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://discordapp.com/channels/@me" target="_blank"></a><span data-message="noTabHelp3"></span></p>
+	<h1>同步 YouTube 狀態至 Discord</h1>
+
+	<div id="no-discord" class="hidden">
+		<div class="header">找不到 Discord 分頁</div>
+		解決方案很簡單，就是開一個 <a href="https://discordapp.com/channels/@me" target="_blank">Discord</a> 分頁。如果你已經開了，那就重新整理它。
 	</div>
-	<div id="content-ok" class="hidden">
-		<p>
-			<span data-message="source"></span>
-			<select id="source">
-				<option value="off" data-message="sourceOff"></option>
-				<option value="custom" data-message="sourceCustom"></option>
-				<option value="youtube">YouTube</option>
-				<option value="soundcloud">SoundCloud</option>
-				<option value="plex">Plex</option>
-			</select>
-		</p>
-		<div id="content-source-off" class="hidden"></div>
-		<div id="content-source-custom" class="hidden">
-			<select id="type">
-				<option value="0" data-message="activityTypePlaying"></option>
-				<option value="1" data-message="activityTypeStreaming"></option>
-				<option value="2" data-message="activityTypeListening"></option>
-				<option value="3" data-message="activityTypeWatching"></option>
-				<option value="4" data-message="activityTypeCustomStatus"></option>
-			</select>
-			<input type="text" id="name">
-			<input type="text" id="details" data-placeholder="activityDetails">
-			<input type="text" id="state" data-placeholder="activityState">
-			<div id="party">
-				<input type="number" id="partycur" placeholder="6">
-				/
-				<input type="number" id="partymax" placeholder="10">
-			</div>
-			<input type="text" id="streamurl" value="https://twitch.tv/settings" data-placeholder="activityStreamURL">
-			<p id="streamnote" data-message="hintTwitchOnly"></p>
-		</div>
-		<div id="content-source-youtube" class="hidden">
-			<div id="content-source-youtube-notab" class="hidden">
-				<p><b><span data-message="noTabPrefix"></span>YouTube<span data-message="noTabSuffix"></span></b></p>
-				<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://youtube.com/" target="_blank"></a><span data-message="noTabHelp3"></span></p>
-			</div>
-			<div id="content-source-youtube-ok" class="hidden">
-				<p data-message="sourceAutoVideo"></p>
-			</div>
-		</div>
-		<div id="content-source-soundcloud" class="hidden">
-			<div id="content-source-soundcloud-notab" class="hidden">
-				<p><b data-message="trouble"></b></p>
-				<p><b><span data-message="noTabPrefix"></span>SoundCloud<span data-message="noTabSuffix"></span></b></p>
-				<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://soundcloud.com/" target="_blank"></a><span data-message="noTabHelp3"></span></p>
-			</div>
-			<div id="content-source-soundcloud-ok" class="hidden">
-				<p data-message="sourceAutoMusic"></p>
-			</div>
-		</div>
-		<div id="content-source-plex" class="hidden">
-			<div id="content-source-plex-notab" class="hidden">
-				<p><b><span data-message="noTabPrefix"></span>Plex<span data-message="noTabSuffix"></span></b></p>
-				<p><span data-message="noTabHelp1"></span><a data-message="noTabHelp2" href="https://app.plex.tv/" target="_blank"></a><span data-message="noTabHelp3"></span></p>
-			</div>
-			<div id="content-source-plex-ok" class="hidden">
-				<p data-message="sourceAutoPlex"></p>
-			</div>
-		</div>
-		<button id="updatebtn" data-message="activityUpdate"></button>
+
+	<div id="no-youtube" class="hidden">
+		<div class="header">找不到 YouTube 分頁</div>
+		解決方案很簡單，就是開一個 <a href="https://www.youtube.com/" target="_blank">YouTube</a> 分頁。如果你已經開了，那就重新整理它。
 	</div>
-	<p>Copyright (c) 2018-2019, <a href="https://timmyrs.de" target="_blank">Tim "timmyRS" Speckhals</a></p>
+
+	<div id="no-both" class="hidden">
+		<div class="header">找不到 Discord 與 YouTube 分頁</div>
+		噢不！你必須開啟 <a href="https://discordapp.com/channels/@me" target="_blank">Discord</a> 和 <a href="https://www.youtube.com/" target="_blank">YouTube</a> 的 Chrome 頁籤才能使用這個功能。如果兩者都已經開啟了，那麼就試著重新整理頁面。
+	</div>
+
+	<!--<div id="is-prepared">
+		我們已經連結到你的 Discord 狀態了。只差你按下「開始監聽 YouTube 狀態」了！
+	</div>
+
+	<div id="is-listening">
+		目前正在監聽你的 YouTube 狀態，若要停止則按下「停止監聽行為」即可。
+	</div>-->
+
+	<div id="is-listening" class="hidden">
+		目前正在監聽你的 YouTube 狀態，一切良好！
+	</div>
+
+	<!--<div id="control">
+		<button id="start" class="primary">
+			開始監聽 YouTube 狀態
+		</button>
+		<button id="stop" class="hidden">
+			停止監聽行為
+		</button>
+	</div>-->
+
+
+	<fieldset>
+		<legend>偏好設定</legend>
+		<div class="checkbox">
+			<input type="checkbox" id="emptyWhenPause">
+			<label for="emptyWhenPause">影片暫停或串流結束時移除狀態</label>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>顯示種類</legend>
+		<div class="radio">
+			<input type="radio" id="typeView" name="detailType" value="view">
+			<label for="typeView">觀看次數或觀賞人數</label>
+		</div>
+		<div class="radio">
+			<input type="radio" id="typeName" name="detailType" value="name">
+			<label for="typeName">頻道名稱</label>
+		</div>
+	</fieldset>
+
+	<fieldset>
+		<legend>當 ... 才更改狀態</legend>
+		<div class="radio">
+			<input type="radio" id="filterIn" name="filterType" value="in">
+			<label for="filterIn">頻道在下列清單中</label>
+		</div>
+		<div class="radio">
+			<input type="radio" id="filterNot" name="filterType" value="out">
+			<label for="filterNot">頻道不在下列清單中</label>
+		</div>
+		<textarea id="filterList" rows="5" placeholder=""></textarea>
+	</fieldset>
+
+	<small>由 <a href="https://yami.io" target="_blank">Yami Odymel</a>、<a href="https://timmyrs.de" target="_blank">Tim "timmyRS" Speckhals</a> 設計，原始碼以「別當個雞掰人」公眾授權條款釋出。</small>
+
 	<script src="popup.js"></script>
 </body>
 </html>

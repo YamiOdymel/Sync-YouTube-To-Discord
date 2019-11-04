@@ -1,13 +1,13 @@
 {
 	"manifest_version": 2,
-	"default_locale": "en",
+	"default_locale": "zh_TW",
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"icons": {
 		"128": "icon.png"
 	},
-	"version": "2.6.0",
-	"author": "timmyRS",
+	"version": "1.0.0",
+	"author": "YamiOdymel",
 	"minimum_chrome_version": "41",
 	"permissions": [
 		"storage"
@@ -16,7 +16,9 @@
 		"default_popup": "popup.html"
 	},
 	"background": {
-		"scripts": ["background.js"],
+		"scripts": [
+			"background.js"
+		],
 		"persistent": false
 	},
 	"content_scripts": [
@@ -26,30 +28,17 @@
 				"https://ptb.discordapp.com/channels/*",
 				"https://canary.discordapp.com/channels/*"
 			],
-			"js": ["discord.js"],
+			"js": [
+				"discord.js"
+			],
 			"run_at": "document_start"
 		},
 		{
-			"matches": ["https://www.youtube.com/*"],
-			"js": [
-				"youtube.js",
-				"content_script.js"
+			"matches": [
+				"https://www.youtube.com/*"
 			],
-			"run_at": "document_idle"
-		},
-		{
-			"matches": ["https://soundcloud.com/*"],
 			"js": [
-				"soundcloud.js",
-				"content_script.js"
-			],
-			"run_at": "document_idle"
-		},
-		{
-			"matches": ["https://app.plex.tv/desktop"],
-			"js": [
-				"plex.js",
-				"content_script.js"
+				"youtube.js"
 			],
 			"run_at": "document_idle"
 		}
