@@ -6,7 +6,7 @@
 	"icons": {
 		"128": "icon.png"
 	},
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"author": "YamiOdymel",
 	"minimum_chrome_version": "41",
 	"permissions": [
